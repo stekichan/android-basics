@@ -469,6 +469,7 @@ public class JsonUtils {
 		aka = array_process(aka);
 		alsoKnownAs = Arrays.asList(aka.split("\\s*,\\s*"));
 		placeOfOrigin = obj_fetch(json, "placeOfOrigin");
+		placeOfOrigin = placeOfOrigin.isEmpty() || placeOfOrigin.equals("") ? "Not available" : placeOfOrigin;
 		description = obj_fetch(json, "description");
 		image = obj_fetch(json, "image");
 		ingr = obj_fetch(json, "ingredients");

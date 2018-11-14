@@ -39,11 +39,16 @@ public class Sandwich {
         return S;
     }
 
+    public static String null_string_process(String string)
+    {
+        return (string == null || string.isEmpty()) ? "Not available" : string;
+    }
+
     public Sandwich(String mainName, List<String> alsoKnownAs, String placeOfOrigin, String description, String image, List<String> ingredients) {
         this.mainName = mainName;
         this.alsoKnownAs = alsoKnownAs;
-        this.placeOfOrigin = placeOfOrigin;
-        this.description = description;
+        this.placeOfOrigin = null_string_process(placeOfOrigin);
+        this.description = null_string_process(description);
         this.image = image;
         this.ingredients = ingredients;
     }

@@ -68,18 +68,31 @@ public class DetailActivity extends AppCompatActivity {
         params.setMargins(40,10,10,10);
 
         TextView  textView;
+
+        textView = findViewById(R.id.also_known_label_tv);
+        textView.setPadding(30,10,0,10);
+
         textView = findViewById(R.id.also_known_tv);
         textView.setText(sandwich.getAlsoKnownAsString());
         textView.setLayoutParams(params);
 
 
+        textView = findViewById(R.id.ingredient_label_tv);
+        textView.setPadding(30,10,0,10);
+
         textView = findViewById((R.id.ingredients_tv));
         textView.setText(sandwich.getIngredientsString());
         textView.setLayoutParams(params);
 
+        textView = findViewById(R.id.place_label_tv);
+        textView.setPadding(30,10,0,10);
+
         textView = findViewById((R.id.place_of_origin_tv));
         textView.setText(sandwich.getPlaceOfOrigin());
         textView.setLayoutParams(params);
+
+        textView = findViewById(R.id.detail_desc_label_tv);
+        textView.setPadding(30,10,0,10);
 
         textView = findViewById(R.id.description_tv);
         textView.setText(sandwich.getDescription());
