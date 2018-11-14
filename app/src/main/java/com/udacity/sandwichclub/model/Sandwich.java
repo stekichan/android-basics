@@ -1,5 +1,8 @@
 package com.udacity.sandwichclub.model;
 
+import android.net.Uri;
+
+import java.util.Iterator;
 import java.util.List;
 
 public class Sandwich {
@@ -15,6 +18,25 @@ public class Sandwich {
      * No args constructor for use in serialization
      */
     public Sandwich() {
+    }
+
+    static String list_to_string(List<String> list)
+    {
+        Iterator it;
+        String   S = "Not available";
+
+        if (list == null)
+            return S;
+        if (list.isEmpty())
+            return S;
+         it = list.iterator();
+        while (it.hasNext()) {
+            if (S.equals("Not available"))
+                S = (String) it.next();
+            else
+                S = S + ", " + it.next();
+        }
+        return S;
     }
 
     public Sandwich(String mainName, List<String> alsoKnownAs, String placeOfOrigin, String description, String image, List<String> ingredients) {
@@ -38,6 +60,11 @@ public class Sandwich {
         return alsoKnownAs;
     }
 
+    public String getAlsoKnownAsString()
+    {
+        return list_to_string(getAlsoKnownAs());
+    }
+
     public void setAlsoKnownAs(List<String> alsoKnownAs) {
         this.alsoKnownAs = alsoKnownAs;
     }
@@ -58,8 +85,8 @@ public class Sandwich {
         this.description = description;
     }
 
-    public String getImage() {
-        return image;
+    public Uri getImage() {
+        return Uri.parse(image);
     }
 
     public void setImage(String image) {
@@ -69,6 +96,7 @@ public class Sandwich {
     public List<String> getIngredients() {
         return ingredients;
     }
+    public String getIngredientsString() {return list_to_string(getIngredients());}
 
     public void setIngredients(List<String> ingredients) {
         this.ingredients = ingredients;

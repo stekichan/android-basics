@@ -3,12 +3,17 @@ package com.udacity.sandwichclub;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.view.Gravity;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.squareup.picasso.Picasso;
 import com.udacity.sandwichclub.model.Sandwich;
 import com.udacity.sandwichclub.utils.JsonUtils;
+import android.widget.TextView;
+import android.widget.LinearLayout;
+import android.widget.FrameLayout.LayoutParams;
 
 public class DetailActivity extends AppCompatActivity {
 
@@ -43,11 +48,11 @@ public class DetailActivity extends AppCompatActivity {
             return;
         }
 
-        populateUI();
+        populateUI(sandwich);
+        Picasso.with(this).setLoggingEnabled(true);
         Picasso.with(this)
                 .load(sandwich.getImage())
                 .into(ingredientsIv);
-
         setTitle(sandwich.getMainName());
     }
 
@@ -56,7 +61,28 @@ public class DetailActivity extends AppCompatActivity {
         Toast.makeText(this, R.string.detail_error_message, Toast.LENGTH_SHORT).show();
     }
 
-    private void populateUI() {
+    private void populateUI(Sandwich sandwich) {
 
+        /* Borrowed from: https://stackoverflow.com/questions/15636401/how-to-set-margins-for-textview-programmatically */
+        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
+        params.setMargins(40,10,10,10);
+
+        TextView  textView;
+        textView = findViewById(R.id.also_known_tv);
+        textView.setText(sandwich.getAlsoKnownAsString());
+        textView.setLayoutParams(params);
+
+
+        textView = findViewById((R.id.ingredients_tv));
+        textView.setText(sandwich.getIngredientsString());
+        textView.setLayoutParams(params);
+
+        textView = findViewById((R.id.place_of_origin_tv));
+        textView.setText(sandwich.getPlaceOfOrigin());
+        textView.setLayoutParams(params);
+
+        textView = findViewById(R.id.description_tv);
+        textView.setText(sandwich.getDescription());
+        textView.setLayoutParams(params);
     }
 }
