@@ -437,6 +437,7 @@ public class JsonUtils {
 		return obj.je_content;
 	}
 	public static String array_process(String array) {
+		/* @todo: Reference ? */
 		String search_string = "'([^\\\\']+|\\\\([btnfr\"'\\\\]|[0-3]?[0-7]{1,2}|u[0-9a-fA-F]{4}))*'|\"([^\\\\\"]+|\\\\([btnfr\"'\\\\]|[0-3]?[0-7]{1,2}|u[0-9a-fA-F]{4}))*\"";
 		Pattern pattern = Pattern.compile(search_string);
 		Matcher matcher = pattern.matcher(array);
