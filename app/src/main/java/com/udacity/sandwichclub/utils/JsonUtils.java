@@ -145,7 +145,7 @@ public class JsonUtils {
 
 		void je_val_extract()
 		{
-			int i   i;
+			int     i;
 			String  parent = this.je_parent;
 
 			/**
