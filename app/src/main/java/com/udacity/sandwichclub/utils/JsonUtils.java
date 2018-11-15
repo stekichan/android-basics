@@ -454,7 +454,6 @@ public class JsonUtils {
 
 	public static Sandwich parseSandwichJson(String json)
 	{
-		//String mainName, List<String> alsoKnownAs, String placeOfOrigin, String description, String image, List<String> ingr
 		String       mainName;
 		String       aka;
 		List<String> alsoKnownAs;
