@@ -31,21 +31,13 @@ public class Sandwich {
         Pattern pattern = Pattern.compile(search_string);
         Matcher matcher;
         Boolean found;
-        String val;
-
 
         if (list == null)
             return S;
         if (list.isEmpty())
             return S;
-         it = list.iterator();
-        while (it.hasNext()) {
-            val = it.next().toString();
-            System.out.println("Read string is: "+ val);
-             matcher = pattern.matcher((val));
-             found = matcher.find();
-             if (!found)
-                 break;
+        matcher = pattern.matcher(list.toString());
+        while (matcher.find()) {
             if (S.equals("Not available"))
                 S = matcher.group(1);
             else
@@ -54,18 +46,25 @@ public class Sandwich {
         return S;
     }
 
-    public static String null_string_process(String string)
+    static String null_string_process(String string)
     {
-        return (string == null || string.isEmpty()) ? "Not available" : string;
+        Pattern pattern;
+        Matcher matcher;
+        String search_string = "[a-zA-Z]";
+        pattern = Pattern.compile(search_string);
+        matcher = pattern.matcher(string);
+        Boolean found = matcher.find();
+
+        return (!found || string == null || string.isEmpty()) ? "Not available" : string;
     }
 
     public Sandwich(String mainName, List<String> alsoKnownAs, String placeOfOrigin, String description, String image, List<String> ingredients) {
-        this.mainName = mainName;
-        this.alsoKnownAs = alsoKnownAs;
-        this.placeOfOrigin = null_string_process(placeOfOrigin);
-        this.description = null_string_process(description);
-        this.image = image;
-        this.ingredients = ingredients;
+        setMainName(mainName);
+        setAlsoKnownAs(alsoKnownAs);
+        setPlaceOfOrigin(null_string_process(placeOfOrigin));
+        setDescription(null_string_process(description));
+        setImage(image);
+        setIngredients(ingredients);
     }
 
     public String getMainName() {

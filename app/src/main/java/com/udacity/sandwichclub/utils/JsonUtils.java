@@ -442,7 +442,6 @@ public class JsonUtils {
 		Matcher matcher = pattern.matcher(array);
 		String output = "Not available";
 
-
 		while (matcher.find()) {
 			if (output.equals("Not available"))
 				output = matcher.group();
@@ -464,15 +463,12 @@ public class JsonUtils {
 		List<String> ingredients;
 
 		mainName = obj_fetch(json, "mainName");
-		aka = obj_fetch(json, "alsoKnownAs");
-		aka = array_process(aka);
+		aka = array_process(obj_fetch(json, "alsoKnownAs"));
 		alsoKnownAs = Arrays.asList(aka.split("\\s*,\\s*"));
 		placeOfOrigin = obj_fetch(json, "placeOfOrigin");
-		placeOfOrigin = placeOfOrigin.isEmpty() || placeOfOrigin.equals("") ? "Not available" : placeOfOrigin;
 		description = obj_fetch(json, "description");
 		image = obj_fetch(json, "image");
-		ingr = obj_fetch(json, "ingredients");
-		ingr = array_process(ingr);
+		ingr = array_process(obj_fetch(json, "ingredients"));
 		ingredients = Arrays.asList(ingr.split("\\s*,\\s*"));
 
 		return new Sandwich(mainName, alsoKnownAs, placeOfOrigin, description, image, ingredients);
