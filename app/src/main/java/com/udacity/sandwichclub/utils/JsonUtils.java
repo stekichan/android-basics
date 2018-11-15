@@ -18,6 +18,7 @@ public class JsonUtils {
 			JT_BOOL,
 			JT_INVAL;
 	}
+
 	static abstract class JElem {
 		JElemType      je_type;
 		/* String holding the JSON element. */
@@ -41,7 +42,7 @@ public class JsonUtils {
 	}
 
 	static Matcher ju_pattern_search(String search_string, String parent,
-					 				  int start, int end)
+					 int start, int end)
 	{
 		Pattern pattern = Pattern.compile(search_string);
 
@@ -76,10 +77,12 @@ public class JsonUtils {
 			je_len_calc();
 			je_val_extract();
 		}
+
 		void je_len_calc()
 		{
 		// Not required
 		}
+
 		void je_val_extract()
 		{
 			int     i;
@@ -102,8 +105,8 @@ public class JsonUtils {
 				comma_idx = Integer.MAX_VALUE;
 
 			matcher = ju_pattern_search("\n", parent,
-						    			 this.je_start,
-						    		parent.length() - 1);
+						    this.je_start,
+						    parent.length() - 1);
 
 			if (matcher.find())
 				nxt_line_idx = matcher.start();
@@ -115,8 +118,8 @@ public class JsonUtils {
 			}
 			min_idx = Math.min(comma_idx, nxt_line_idx);
 			matcher = ju_pattern_search("(true|false)", parent,
-									    this.je_start,
-								   this.je_start + min_idx);
+						    this.je_start,
+						    this.je_start + min_idx);
 			if (matcher.find()) {
 				this.je_content = matcher.group();
 				return;
@@ -125,6 +128,7 @@ public class JsonUtils {
 			return;
 		}
 	}
+
 	static class num_elem extends JElem {
 		public num_elem(int obj_start, String name, String parent)
 		{
@@ -133,20 +137,25 @@ public class JsonUtils {
 			je_len_calc();
 			je_val_extract();
 		}
+
 		void je_len_calc()
 		{
 			// Not required.
 		}
+
 		void je_val_extract()
 		{
-			int i;
-			String parent = this.je_parent;
+			int i   i;
+			String  parent = this.je_parent;
 
-			/* Leaving out the case of exponentials and negative */
-			String search_string = "-?[1-9]\\d*|0";
-			Pattern pattern = Pattern.compile(search_string);
-			Matcher matcher = pattern.matcher(parent.substring(this.je_start,
-							  parent.length() - 1));
+			/**
+			 * Leaving out the case of exponentials.
+			 * Regex borrowed from: https://stackoverflow.com/questions/2367381/how-to-extract-numbers-from-a-string-and-get-an-array-of-ints
+			 **/
+			String  search_string = "-?[1-9]\\d*|0";
+			Pattern pattern       = Pattern.compile(search_string);
+			Matcher matcher       = pattern.matcher(parent.substring(this.je_start,
+							  	parent.length() - 1));
 			if (matcher.find()) {
 				this.je_content = matcher.group();
 			} else
@@ -161,18 +170,21 @@ public class JsonUtils {
 			je_len_calc();
 			je_val_extract();
 		}
+
 		void je_len_calc()
 		{
 			// Not required
 		}
+
 		void je_val_extract()
 		{
-			int i;
-			int colon_idx;
-			// Borrowed from https://stackoverflow.com/questions/2498635/java-regex-for-matching-quoted-string-with-escaped-quotes/2498670
+			int     i;
+			int     colon_idx;
+			/* Borrowed from https://stackoverflow.com/questions/2498635/java-regex-for-matching-quoted-string-with-escaped-quotes/2498670 */
 			String  search_string ="'([^\\\\']+|\\\\([btnfr\"'\\\\]|[0-3]?[0-7]{1,2}|u[0-9a-fA-F]{4}))*'|\"([^\\\\\"]+|\\\\([btnfr\"'\\\\]|[0-3]?[0-7]{1,2}|u[0-9a-fA-F]{4}))*\"";
 			Pattern pattern = Pattern.compile(search_string);
 			Matcher matcher;
+
 			i = this.je_start;
 			/* Get over the name of the field. */
 			while (i < this.je_parent.length() &&
@@ -199,6 +211,7 @@ public class JsonUtils {
 			je_len_calc();
 			je_val_extract();
 		}
+
 		void je_len_calc()
 		{
 			int i;
@@ -248,6 +261,7 @@ public class JsonUtils {
 			}
 			this.je_len = i - this.je_start + 1;
 		}
+
 		void je_val_extract()
 		{
 			int     i;
@@ -255,11 +269,11 @@ public class JsonUtils {
 			String  search_string = "\\[";
 			Pattern pattern = Pattern.compile(search_string);
 			Matcher matcher = pattern.matcher(parent.substring(this.je_start,
-					  					      parent.length()));
+					  				   parent.length()));
 			if (matcher.find()) {
 				this.je_content =
 					parent.substring(this.je_start + matcher.start(),
-									 this.je_start + this.je_len);
+							 this.je_start + this.je_len);
 			} else
 				System.out.println("Invalid JSON format");
 		}
@@ -274,6 +288,7 @@ public class JsonUtils {
 			je_len_calc();
 			je_val_extract();
 		}
+
 		/* @todo: Factor out a function common to both array and a general object. */
 		void je_len_calc()
 		{
@@ -307,6 +322,7 @@ public class JsonUtils {
 			}
 			this.je_len = i - this.je_start + 1;
 		}
+
 		void je_val_extract()
 		{
 			int     i;
@@ -321,6 +337,7 @@ public class JsonUtils {
 			}
 		}
 	}
+
 	public static JElem json_elem_create(String json, String obj_name,
 					     				 JElemType obj_type)
 	{
@@ -436,12 +453,13 @@ public class JsonUtils {
 			return null;
 		return obj.je_content;
 	}
+
 	public static String array_process(String array) {
-		/* @todo: Reference ? */
-		String search_string = "'([^\\\\']+|\\\\([btnfr\"'\\\\]|[0-3]?[0-7]{1,2}|u[0-9a-fA-F]{4}))*'|\"([^\\\\\"]+|\\\\([btnfr\"'\\\\]|[0-3]?[0-7]{1,2}|u[0-9a-fA-F]{4}))*\"";
-		Pattern pattern = Pattern.compile(search_string);
-		Matcher matcher = pattern.matcher(array);
-		String output = "Not available";
+		/* Borrowed from https://stackoverflow.com/questions/2498635/java-regex-for-matching-quoted-string-with-escaped-quotes/2498670 */
+		String  search_string = "'([^\\\\']+|\\\\([btnfr\"'\\\\]|[0-3]?[0-7]{1,2}|u[0-9a-fA-F]{4}))*'|\"([^\\\\\"]+|\\\\([btnfr\"'\\\\]|[0-3]?[0-7]{1,2}|u[0-9a-fA-F]{4}))*\"";
+		Pattern pattern       = Pattern.compile(search_string);
+		Matcher matcher       = pattern.matcher(array);
+		String  output        = "Not available";
 
 		while (matcher.find()) {
 			if (output.equals("Not available"))
@@ -463,14 +481,18 @@ public class JsonUtils {
 		String       ingr;
 		List<String> ingredients;
 
-		mainName = obj_fetch(json, "mainName");
-		aka = array_process(obj_fetch(json, "alsoKnownAs"));
-		alsoKnownAs = Arrays.asList(aka.split("\\s*,\\s*"));
+		mainName      = obj_fetch(json, "mainName");
+		aka           = array_process(obj_fetch(json, "alsoKnownAs"));
+		/* 
+		 * Regex borrowed from:
+		 * https://stackoverflow.com/questions/7488643/how-to-convert-comma-separated-string-to-arraylist
+		 */
+		alsoKnownAs   = Arrays.asList(aka.split("\\s*,\\s*"));
 		placeOfOrigin = obj_fetch(json, "placeOfOrigin");
-		description = obj_fetch(json, "description");
-		image = obj_fetch(json, "image");
-		ingr = array_process(obj_fetch(json, "ingredients"));
-		ingredients = Arrays.asList(ingr.split("\\s*,\\s*"));
+		description   = obj_fetch(json, "description");
+		image         = obj_fetch(json, "image");
+		ingr          = array_process(obj_fetch(json, "ingredients"));
+		ingredients   = Arrays.asList(ingr.split("\\s*,\\s*"));
 
 		return new Sandwich(mainName, alsoKnownAs, placeOfOrigin, description, image, ingredients);
 	}
